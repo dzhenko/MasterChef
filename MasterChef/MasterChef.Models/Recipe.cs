@@ -28,6 +28,11 @@
 
         public string Image { get; set; }
 
+        public object UserId { get; set; }
+
+        public virtual User User { get; set; }
+
+        [Required]
         public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }

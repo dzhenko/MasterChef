@@ -1,8 +1,9 @@
 ﻿namespace MasterChef.Web.Controllers
 {
+    using System.Web.Http;
+
     using MasterChef.Data;
     using MasterChef.Web.Infrastructure;
-    using System.Web.Http;
     
     public abstract class BaseApiController : ApiController
     {
@@ -30,5 +31,7 @@
                 return this.userIdProvider;
             }
         }
+
+
     }
 }

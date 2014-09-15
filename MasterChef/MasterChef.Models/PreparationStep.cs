@@ -9,7 +9,10 @@
         public int Minutes { get; set; }
 
         [Required]
-        [MinLength(12)]
+        public int StepNumber { get; set; }
+
+        [Required]
+        [MinLength(6)]
         public string Text { get; set; }
 
         public object RecipeId { get; set; }
