@@ -1,24 +1,38 @@
 (function () {
+    var $wrapper = $('body');
+    var chanelName;
+    var printingFunction = function (m) {
+        console.log(m);
+    };
     var pubnub;
 
-    initializeRoom();
-    subscribe(function (m) {
-        console.log(m);
+    $wrapper.on('click', '#start-recipie', function () {
+        // GET subscribeKey and chanelName from server
+
+        // Start listening
+        //TODO skip PublishKey for recipie notification
+        //var publishKey = 'demo';
+        var subscribeKey = 'demo';
+        chanelName = 'my-notifications';
+
+        pubnub = PUBNUB.init({
+            //publish_key: publishKey,
+            subscribe_key: subscribeKey
+        });
+
+        pubnub.subscribe({
+            channel: chanelName,
+            message: printingFunction
+        });
     });
 
-    function initializeRoom() {
-        pubnub = PUBNUB.init({
-            publish_key: 'demo',
-            subscribe_key: 'demo'
-        });
-    }
+    $wrapper.on('click', '#finish-recipie', function () {
+        if (chanelName != null) {
+            pubnub.unsubscribe({
+                channel: chanelName
+            });
+        }
 
-    function subscribe(printFunction) {
-        pubnub.subscribe({
-            channel: 'my-notifications',
-            message: function (m) {
-                console.log(m);
-            }
-        });
-    }
+        //Send termination request to server
+    });
 }());
