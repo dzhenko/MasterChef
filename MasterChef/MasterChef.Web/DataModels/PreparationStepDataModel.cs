@@ -1,9 +1,9 @@
 ﻿namespace MasterChef.Web.DataModels
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     using MasterChef.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 
     public class PreparationStepDataModel
     {

@@ -1,5 +1,6 @@
 ﻿namespace MasterChef.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class PreparationStep
@@ -13,11 +14,10 @@
         public int StepNumber { get; set; }
 
         [Required]
-        [MinLength(6)]
         public string Text { get; set; }
 
         [Required]
-        public object RecipeId { get; set; }
+        public Guid RecipeId { get; set; }
 
         public virtual Recipe Recipe { get; set; }
     }

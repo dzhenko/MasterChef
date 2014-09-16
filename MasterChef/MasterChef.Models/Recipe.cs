@@ -31,7 +31,7 @@
         public string Image { get; set; }
 
         [Required]
-        public object UserId { get; set; }
+        public string UserId { get; set; }
 
         public virtual User User { get; set; }
 

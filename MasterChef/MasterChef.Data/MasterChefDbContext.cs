@@ -2,7 +2,7 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Linq;
 
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -23,8 +23,6 @@
         }
 
         public IDbSet<Recipe> Recipes { get; set; }
-
-        // public IDbSet<User> Users { get; set; }
 
         public IDbSet<Comment> Comments { get; set; }
 

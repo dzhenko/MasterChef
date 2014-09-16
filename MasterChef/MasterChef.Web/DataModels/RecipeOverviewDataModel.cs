@@ -17,7 +17,7 @@
                     Description = r.Description,
                     Image = r.Image,
                     Name = r.Name,
-                    Id = r.Id
+                    Id = r.Id.ToString()
                 };
             }
         }
@@ -28,6 +28,6 @@
 
         public string Image { get; set; }
 
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

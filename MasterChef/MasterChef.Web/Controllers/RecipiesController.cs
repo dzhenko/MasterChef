@@ -111,11 +111,13 @@
 
         private void GenerateSampleData()
         {
+            var categories = this.Data.Categories.All().Select(c => c.Id).ToArray();
+
             var user = this.Data.Users.All().FirstOrDefault();
 
             if (user == null)
             {
-                throw new ArgumentException("No users in database");
+                throw new ArgumentNullException("No users in database");
             }
 
             var recipies = new List<Recipe>()
@@ -123,7 +125,7 @@
                 // soups
                 new Recipe()
                 {
-                    CategoryId = 0,
+                    CategoryId = categories[0],
                     Description = "Homemade Chicken soup",
                     Image = "http://www.taste.com.au/images/recipes/agt/2005/07/2458_l.jpg",
                     Name = "Chicken soup",
@@ -131,7 +133,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 0,
+                    CategoryId = categories[0],
                     Description = "Tomatoe soup",
                     Image = "http://www.healtheelife.com/wp-content/uploads/2014/06/tomato-soup1.jpg",
                     Name = "Tomatoe soup",
@@ -140,7 +142,7 @@
                 // salads
                 new Recipe()
                 {
-                    CategoryId = 1,
+                    CategoryId = categories[1],
                     Description = "My favorite Carrot salad",
                     Image = "http://ecosalon.com/data/fe/image/carrot%20salad.jpg",
                     Name = "Carrot salad",
@@ -148,7 +150,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 1,
+                    CategoryId = categories[1],
                     Description = "Fresh Fruit salad",
                     Image = "http://media1.onsugar.com/files/2012/08/33/1/192/1922195/e20a68aa18dbc9cc_shutterstock_87164776.xxxlarge/i/How-Make-Really-Good-Fruit-Salad.jpg",
                     Name = "Fruit salad",
@@ -156,7 +158,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 1,
+                    CategoryId = categories[1],
                     Description = "Classical Shopska salad",
                     Image = "http://www.pizzadonvito.com/files/data_0/52/Image/eaUw-e02.jpg",
                     Name = "Shopska salad",
@@ -165,7 +167,7 @@
                 // main dishes
                 new Recipe()
                 {
-                    CategoryId = 2,
+                    CategoryId = categories[2],
                     Description = "The besh grilled chicken ever for realz",
                     Image = "http://iamchampionaire.files.wordpress.com/2013/12/cooked-chicken.jpg",
                     Name = "Grilled chicken",
@@ -173,7 +175,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 2,
+                    CategoryId = categories[2],
                     Description = "Fresh Salomon with lemon",
                     Image = "http://dietfooddelivery.biz/wp-content/uploads/2014/06/cooked-fish-images.jpg",
                     Name = "Grilled salomon",
@@ -181,7 +183,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 2,
+                    CategoryId = categories[2],
                     Description = "Homemade pork steak with rice",
                     Image = "http://lowcarbgrub.com/wp-content/uploads/2012/10/steak_on_plate.jpg",
                     Name = "Pork steak",
@@ -189,7 +191,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 2,
+                    CategoryId = categories[2],
                     Description = "High carbon spaghetti bolognese",
                     Image = "http://img.food.com/img/recipes/14/35/19/large/picNlHUhE.jpg",
                     Name = "Spaghetti bolognese",
@@ -197,7 +199,7 @@
                 },
                 new Recipe()
                 {
-                    CategoryId = 2,
+                    CategoryId = categories[2],
                     Description = "Spicy juicy porkchops with carrots",
                     Image = "http://media-cdn.tripadvisor.com/media/photo-s/01/f5/21/e9/main-dish-of-rostbraten.jpg",
                     Name = "Pork chops with carrots",
@@ -206,7 +208,7 @@
                 // desserts
                 new Recipe()
                 {
-                    CategoryId = 3,
+                    CategoryId = categories[3],
                     Description = "The best homemade Tiramisu cake ever greeneyed one !",
                     Image = "http://upload.wikimedia.org/wikipedia/commons/8/83/Tiramisu_with_cholocate_sauce_at_Ferrara_in_Little_Italy,_New_York_City.jpg",
                     Name = "Tiramisu cake",
@@ -215,7 +217,7 @@
                 // desserts
                 new Recipe()
                 {
-                    CategoryId = 3,
+                    CategoryId = categories[3],
                     Description = "Homemade Creme Caramel",
                     Image = "http://files.meilleurduchef.com/mdc/photo/recipe/creme-caramel/creme-caramel-640.jpg",
                     Name = "Creme Caramel",
@@ -228,46 +230,29 @@
                 this.Data.Recipies.Add(recipie);
             }
 
-            // obtaining Id-s
-            this.Data.SaveChanges();
-
-            var comments = new List<Comment>()
-            {
-                new Comment() { Text = "Great stuff yo!" },
-                new Comment() { Text = "Magic stuff" },
-                new Comment() { Text = "Unicorns in my stomach" },
-                new Comment() { Text = "I can feel the butterflies" },
-                new Comment() { Text = "Kinda works" }
-            };
-
-            var recipieViews = new List<RecipeView>()
-            {
-                new RecipeView() {Liked = true},
-                new RecipeView() {Liked = true},
-                new RecipeView() {Liked = true},
-                new RecipeView() {Liked = false},
-                new RecipeView() {Liked = false},
-                new RecipeView() {Liked = false},
-                new RecipeView() {Liked = null},
-                new RecipeView() {Liked = null},
-                new RecipeView() {Liked = null},
-            };
-
             foreach (var recipie in recipies)
             {
-                foreach (var comment in comments)
-                {
-                    comment.RecipeId = recipie.Id;
-                    comment.UserId = user.Id;
-                    this.Data.Comments.Add(comment);
-                }
+                this.Data.Comments.Add(new Comment() { Text = "Great stuff yo!", RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.Comments.Add(new Comment() { Text = "Magic stuff", RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.Comments.Add(new Comment() { Text = "Unicorns in my stomach", RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.Comments.Add(new Comment() { Text = "I can feel the butterflies", RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.Comments.Add(new Comment() { Text = "Kinda works", RecipeId = recipie.Id, UserId = user.Id });
 
-                foreach (var recipieView in recipieViews)
-                {
-                    recipieView.RecipeId = recipie.Id;
-                    recipieView.UserId = user.Id;
-                    this.Data.RecipeViews.Add(recipieView);
-                }
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = true, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = true, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = true, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = false, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = false, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = false, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = null, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = null, RecipeId = recipie.Id, UserId = user.Id });
+                this.Data.RecipeViews.Add(new RecipeView() { Liked = null, RecipeId = recipie.Id, UserId = user.Id });
+
+                this.Data.PreparationSteps.Add(new PreparationStep() { Minutes = 5, RecipeId = recipie.Id, StepNumber = 1, Text = "Prepare mentaly" });
+                this.Data.PreparationSteps.Add(new PreparationStep() { Minutes = 5, RecipeId = recipie.Id, StepNumber = 2, Text = "Find clean dishes" });
+                this.Data.PreparationSteps.Add(new PreparationStep() { Minutes = 5, RecipeId = recipie.Id, StepNumber = 3, Text = "Pay your electricity bill" });
+                this.Data.PreparationSteps.Add(new PreparationStep() { Minutes = 5, RecipeId = recipie.Id, StepNumber = 4, Text = "Clean the least dirty dishes" });
+                this.Data.PreparationSteps.Add(new PreparationStep() { Minutes = 5, RecipeId = recipie.Id, StepNumber = 5, Text = "Cook the damn thing" });
             }
 
             this.Data.SaveChanges();
