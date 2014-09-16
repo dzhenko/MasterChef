@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+
+    <p>Enter Chat and press enter</p>
+
+    <div><input id=input placeholder=you-chat-here /></div>
+
+    <h1>Chat Output</h1>
+    <div id=box></div>
+
+    <script src='http://cdn.pubnub.com/pubnub.min.js'></script>
+    <script>
+        (function () {
+            var pubnub = PUBNUB.init({
+                publish_key: 'pub-c-15409870-ef42-4da1-bc2d-4211862362f3',
+                subscribe_key: 'sub-c-e6269c5c-3d90-11e4-87bf-02ee2ddab7fe',
+                origin: 'pubsub.pubnub.com'
+            });
+
+            var box = PUBNUB.$('box'), input = PUBNUB.$('input'), channel = 'myNewChannel';
+
+            pubnub.subscribe({
+                channel: channel,
+                callback: function (text) { box.innerHTML = ('' + text) + '<br>' + box.innerHTML }
+            });
+
+            pubnub.bind('keyup', input, function (e) {
+                (e.keyCode || e.charCode) === 13 && pubnub.publish({
+                    channel: channel, message: input.value, x: (input.value = '')
+                })
+            });
+
+            pubnub.history({
+                channel: 'myNewChannel',
+                callback: function (text) { box.innerHTML = ('' + text[0].reverse().join('</br>')) + '<br>' + box.innerHTML }
+            });
+            //pubnub.unsubscribe({          //stop listening
+            //    channel: 'myNewChannel',
+            //});
+        })()</script>
+</body>
+</html>
