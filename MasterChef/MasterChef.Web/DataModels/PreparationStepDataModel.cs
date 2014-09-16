@@ -20,7 +20,7 @@ using System.Linq.Expressions;
             }
         }
 
-        public static Expression<Func<PreparationStep, PreparationStepDataModel>> FromDataToModel
+        public static Func<PreparationStep, PreparationStepDataModel> FromDataToModel
         {
             get
             {

@@ -24,10 +24,13 @@
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string Image { get; set; }
 
+        [Required]
         public object UserId { get; set; }
 
         public virtual User User { get; set; }

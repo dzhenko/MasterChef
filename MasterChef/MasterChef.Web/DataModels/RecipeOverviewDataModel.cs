@@ -8,7 +8,7 @@
 
     public class RecipeOverviewDataModel
     {
-        public static Expression<Func<Recipe, RecipeOverviewDataModel>> FromDataToModel
+        public static Func<Recipe, RecipeOverviewDataModel> FromDataToModel
         {
             get
             {
@@ -16,7 +16,8 @@
                 {
                     Description = r.Description,
                     Image = r.Image,
-                    Name = r.Name
+                    Name = r.Name,
+                    Id = r.Id
                 };
             }
         }
@@ -26,5 +27,7 @@
         public string Description { get; set; }
 
         public string Image { get; set; }
+
+        public Guid Id { get; set; }
     }
 }

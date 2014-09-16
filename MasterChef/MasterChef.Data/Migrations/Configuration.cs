@@ -5,6 +5,8 @@ namespace MasterChef.Data.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
+    using MasterChef.Models;
+
     internal sealed class Configuration : DbMigrationsConfiguration<MasterChefDbContext>
     {
         public Configuration()
@@ -15,18 +17,36 @@ namespace MasterChef.Data.Migrations
 
         protected override void Seed(MasterChefDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            this.AddCategories(context);
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.SaveChanges();
+        }
+
+        private void AddCategories(MasterChefDbContext context)
+        {
+            context.Categories.Add(new Category()
+            {
+                Name = "Soup",
+                Picture = "http://www.youngandraw.com/wp-content/uploads/Apple-Cumin-Green-Soup.jpg",
+            });
+            
+            context.Categories.Add(new Category()
+            {
+                Name = "Salad",
+                Picture = "http://flipcookbook.zippykid.netdna-cdn.com/wp-content/uploads/2010/09/beetsalad-final.jpg",
+            });
+
+            context.Categories.Add(new Category()
+            {
+                Name = "Main Dish",
+                Picture = "http://www.p3crossfit.com/wp-content/uploads/2013/12/HoneyWasabiSalmon.jpg",
+            });
+
+            context.Categories.Add(new Category()
+            {
+                Name = "Dessert",
+                Picture = "http://www.dessertrecept.nl/wp-content/uploads/2013/06/chocotaart.jpg",
+            });
         }
     }
 }

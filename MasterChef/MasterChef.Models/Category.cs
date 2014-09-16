@@ -17,6 +17,7 @@
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Picture { get; set; }
 
         public virtual ICollection<Recipe> Recipies
