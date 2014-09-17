@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="MasterChef.Service.RecipeService" CodeBehind="RecipeService.svc.cs" %>
