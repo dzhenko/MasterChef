@@ -17,6 +17,8 @@
         private const string DropboxAppKey = "jkgqqefhutacq4n";
         private const string DropboxAppSecret = "21kf0wc1d5kn38j";
         private const string OAuthTokenFileName = @"..\..\..\OAuthTokenFileName.txt";
+        private const string OauthAccessTokenValue = "ra72amhofx2x56vp";
+        private const string OauthAccessTokenSecret = "cf87kxku32j17mg";
 
         private static IDropboxImageUploader dropboxDataProvider;
         private DropboxServiceProvider dropboxServiceProvider;
@@ -26,7 +28,7 @@
         private DropboxImageUploader()
         {
             this.dropboxServiceProvider = new DropboxServiceProvider(DropboxAppKey, DropboxAppSecret, AccessLevel.Full);
-            this.oauthAccessToken = this.LoadOAuthToken();
+            this.oauthAccessToken = new OAuthToken(OauthAccessTokenValue, OauthAccessTokenSecret);
             this.client = new WebClient();
         }
 
@@ -61,7 +63,8 @@
             return sharedUrl.Url.ToString();
         }
 
-        private OAuthToken LoadOAuthToken()
+        #region UsedToCreateOathToken
+        /*private OAuthToken LoadOAuthToken()
         {
             if (!File.Exists(OAuthTokenFileName))
             {
@@ -95,6 +98,7 @@
 
             string[] oauthData = new string[] { oauthAccessToken.Value, oauthAccessToken.Secret };
             File.WriteAllLines(OAuthTokenFileName, oauthData);
-        }
+        }*/
+        #endregion
     }
 }
