@@ -24,12 +24,14 @@
         private DropboxServiceProvider dropboxServiceProvider;
         private OAuthToken oauthAccessToken;
         private WebClient client;
+        private IDropbox dropbox;
 
         private DropboxImageUploader()
         {
             this.dropboxServiceProvider = new DropboxServiceProvider(DropboxAppKey, DropboxAppSecret, AccessLevel.Full);
-            this.oauthAccessToken = new OAuthToken(OauthAccessTokenValue, OauthAccessTokenSecret);
+            this.oauthAccessToken = new OAuthToken(OauthAccessTokenValue, OauthAccessTokenSecret); // this.oauthAccessToken = this.LoadOAuthToken();
             this.client = new WebClient();
+            this.dropbox = this.dropboxServiceProvider.GetApi(this.oauthAccessToken.Value, this.oauthAccessToken.Secret);
         }
 
         public static IDropboxImageUploader Instance
@@ -53,8 +55,6 @@
         /// <returns>The link from dropbox</returns>
         public string UploadImageToDropbox(string url, string fileName)
         {
-            IDropbox dropbox = this.dropboxServiceProvider.GetApi(this.oauthAccessToken.Value, this.oauthAccessToken.Secret);
-
             this.client.DownloadFile(url, fileName);
             Entry uploadFileEntry = dropbox.UploadFileAsync(new FileResource(fileName), string.Format("/images/{0}.jpg", fileName)).Result; // TODO: check for file extensions?
             DropboxLink sharedUrl = dropbox.GetMediaLinkAsync(uploadFileEntry.Path).Result;
