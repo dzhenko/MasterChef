@@ -1,7 +1,7 @@
 recipesApp.factory('requester', function($q, $http, auth) {
     'use strict';
 
-    var rootUrl = 'http://localhost:21185/';
+    var rootUrl = 'http://masterchef-1.apphb.com/';
 
     function register(username, password) {
         var deferred = $q.defer();
