@@ -24,6 +24,10 @@ namespace MasterChef.Data.Migrations
 
         private void AddCategories(MasterChefDbContext context)
         {
+            if (context.Categories.Any())
+            {
+                return;
+            }
             context.Categories.Add(new Category()
             {
                 Name = "Soup",

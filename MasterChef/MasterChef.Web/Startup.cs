@@ -21,7 +21,6 @@ namespace MasterChef.Web
         {
             ConfigureAuth(app);
             app.UseNinjectMiddleware(CreateKernel).UseNinjectWebApi(GlobalConfiguration.Configuration);
-            // app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
         }
         private static StandardKernel CreateKernel()
         {

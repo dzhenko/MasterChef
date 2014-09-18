@@ -16,7 +16,6 @@ recipesApp.controller('LoginController', function HomeController($location, $roo
 
     $scope.register = function(username, password){
         requester.account.register(username, password).then(function(data){
-            console.log('Registered');
             $rootScope.currentUserIsLoggedIn = true;
             $scope.login(username, password);
         });
@@ -24,7 +23,6 @@ recipesApp.controller('LoginController', function HomeController($location, $roo
 
     $scope.login = function(username, password){
         requester.account.login(username, password).then(function(data){
-            console.log('Logged in');
             $rootScope.currentUserIsLoggedIn = true;
             auth.login(data.access_token);
             $location.path('/home');

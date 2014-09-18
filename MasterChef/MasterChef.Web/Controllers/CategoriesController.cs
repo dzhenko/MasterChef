@@ -21,10 +21,10 @@
         {
         }
 
-        [HttpGet]
-        public IHttpActionResult All()
+        public IHttpActionResult Get()
         {
-            return this.Ok(this.Data.Categories.All().Select(CategoryDataModel.FromDataToModel));
+            var categories = this.Data.Categories.All().Select(CategoryDataModel.FromDataToModel);
+            return this.Ok(categories);
         }
     }
 }

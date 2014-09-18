@@ -62,7 +62,7 @@ recipesApp.factory('requester', function($q, $http, auth) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/Create',
+            url:rootUrl + 'api/Recipes',
             type:"POST",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             data: recipe,
@@ -79,7 +79,7 @@ recipesApp.factory('requester', function($q, $http, auth) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/All',
+            url:rootUrl + 'api/Recipes',
             type:"GET",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
@@ -95,7 +95,7 @@ recipesApp.factory('requester', function($q, $http, auth) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/GetById/'+ id,
+            url:rootUrl + 'api/Recipes/'+ id,
             type:"GET",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
@@ -111,7 +111,7 @@ recipesApp.factory('requester', function($q, $http, auth) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/GetByName/' + name,
+            url:rootUrl + 'api/Recipes/?param=name&value=' + name,
             type:"GET",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
@@ -127,7 +127,7 @@ recipesApp.factory('requester', function($q, $http, auth) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/GetByCategory/' + category,
+            url:rootUrl + 'api/Recipes/?param=category&value=' + category,
             type:"GET",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
@@ -139,16 +139,12 @@ recipesApp.factory('requester', function($q, $http, auth) {
         return deferred.promise;
     }
 
-    function commentRecipe(recipe, comment) {
+    function recipeByUserId(id){
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/Comment/',
-            type:"POST",
-            data: {
-                RecipeId : recipe,
-                Text: comment
-            },
+            url:rootUrl + 'api/Recipes/?param=user&value=' + id,
+            type:"GET",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
             success: function(data){
@@ -159,12 +155,49 @@ recipesApp.factory('requester', function($q, $http, auth) {
         return deferred.promise;
     }
 
-    function likeRecipe(recipe) {
+    function ownRecipes(){
+        return recipeByUserId();
+    }
+
+    function recipeDelete(id) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Recipes/Like/' + recipe,
-            type:"GET",
+            url:rootUrl + 'api/Recipes/' + id,
+            type:"DELETE",
+            beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
+            contentType:"application/x-www-form-urlencoded",
+            success: function(data){
+                deferred.resolve(data);
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function commentRecipe(id, comment) {
+        var deferred = $q.defer();
+
+        $.ajax({
+            url:rootUrl + 'api/Recipes/?id=' + id + '&comment=' + comment,
+            type:"PUT",
+            data: comment,
+            beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
+            contentType:"application/x-www-form-urlencoded",
+            success: function(data){
+                deferred.resolve(data);
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    function likeRecipe(id) {
+        var deferred = $q.defer();
+
+        $.ajax({
+            url:rootUrl + 'api/Recipes/' + id,
+            type:"PUT",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
             success: function(data){
@@ -179,7 +212,7 @@ recipesApp.factory('requester', function($q, $http, auth) {
         var deferred = $q.defer();
 
         $.ajax({
-            url:rootUrl + 'api/Categories/All',
+            url:rootUrl + 'api/Categories',
             type:"GET",
             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'bearer ' + auth.token())},
             contentType:"application/x-www-form-urlencoded",
@@ -203,7 +236,10 @@ recipesApp.factory('requester', function($q, $http, auth) {
             all: allRecipes,
             byId: recipeById,
             byName: recipeByName,
-            byCategory: recipeByCategory
+            byCategory: recipeByCategory,
+            byUser:recipeByUserId,
+            own: ownRecipes,
+            delete: recipeDelete
         },
         actions: {
             like: likeRecipe,

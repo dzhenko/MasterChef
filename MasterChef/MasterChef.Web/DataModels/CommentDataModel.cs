@@ -23,13 +23,13 @@
             }
         }
 
-        public static Comment FromModelToData(CommentDataModel model, string userId)
+        public static Comment FromModelToData(string recipeId, string text, string userId)
         {
             return new Comment()
             {
-                RecipeId = Guid.Parse(model.RecipeId),
+                RecipeId = Guid.Parse(recipeId),
                 UserId = userId,
-                Text = model.Text
+                Text = text
             };
         }
 

@@ -40,6 +40,10 @@ var recipesApp = angular
                 templateUrl: 'templates/all-recipes.html',
                 resolve: routeUserChecks.authenticated
             })
+            .when('/user-recipes', {
+                templateUrl: 'templates/user-recipes.html',
+                resolve: routeUserChecks.authenticated
+            })
             .when('/all-categories', {
                 templateUrl: 'templates/all-categories.html',
                 resolve: routeUserChecks.authenticated

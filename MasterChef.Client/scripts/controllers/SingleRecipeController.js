@@ -17,7 +17,6 @@ recipesApp.controller('SingleRecipeController', function SingleRecipeController(
     function refresh(){
         requester.recipe.byId($routeParams.id).then(function(data){
             $scope.recipe = data;
-            console.log(data);
             if ($scope.recipe.Liked == true) {
                 $scope.likeText = 'Dislike';
             }

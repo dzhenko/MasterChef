@@ -5,7 +5,6 @@ recipesApp.controller('CategoryRecipesController', function CategoryRecipesContr
     $scope.information = '. . . loading';
 
     requester.recipe.byCategory($routeParams.categoryName).then(function(data){
-        console.log(data);
         $scope.foundRecipes = data;
         if(data.length === 0) {
             $scope.information = 'None';
