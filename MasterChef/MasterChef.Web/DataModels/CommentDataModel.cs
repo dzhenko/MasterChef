@@ -17,16 +17,17 @@
                 return c => new CommentDataModel() 
                 { 
                     User = c.User.UserName,
-                    Text = c.Text
+                    Text = c.Text,
+                    RecipeId = c.RecipeId.ToString()
                 };
             }
         }
 
-        public static Comment FromModelToData(CommentDataModel model, string userId, Guid recipeId)
+        public static Comment FromModelToData(CommentDataModel model, string userId)
         {
             return new Comment()
             {
-                RecipeId = recipeId,
+                RecipeId = Guid.Parse(model.RecipeId),
                 UserId = userId,
                 Text = model.Text
             };
@@ -36,5 +37,7 @@
 
         [Required]
         public string Text { get; set; }
+
+        public string RecipeId { get; set; }
     }
 }

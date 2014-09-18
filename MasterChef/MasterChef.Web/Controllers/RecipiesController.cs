@@ -16,12 +16,15 @@
     [EnableCors("*", "*", "*")]
     public class RecipesController : BaseApiController
     {
-        private readonly IDropboxImageUploader imageUploadProvider;
+        private readonly IImageUploadProvider imageUploadProvider;
+        private readonly INotificationProvider notificationProvider;
 
-        public RecipesController(IMasterChefData data, IUserIdProvider userIdProvider, IDropboxImageUploader imageUploadProvider)
+        public RecipesController(IMasterChefData data, IUserIdProvider userIdProvider, 
+            IImageUploadProvider imageUploadProvider, INotificationProvider notificationProvider)
             : base(data, userIdProvider)
         {
             this.imageUploadProvider = imageUploadProvider;
+            this.notificationProvider = notificationProvider;
         }
 
         [HttpPost]
@@ -44,6 +47,8 @@
 
             recipe.UserId = this.UserIdProvider.GetUserId();
 
+            var username = this.Data.Users.Find(recipe.UserId);
+
             this.Data.Recipies.Add(recipe);
             
             if (newRecipeDataModel.PreparationSteps != null && newRecipeDataModel.PreparationSteps.Count > 0)
@@ -52,9 +57,11 @@
                     (newRecipeDataModel.PreparationSteps.Select(r => PreparationStepDataModel.FromModelToData(r, recipe.Id)));
             }
 
-            recipe.Image = this.imageUploadProvider.UploadImageToDropbox(newRecipeDataModel.Image, recipe.Id.ToString());
-            
+            recipe.Image = this.imageUploadProvider.UploadImage(newRecipeDataModel.Image, recipe.Id.ToString());
+
             this.Data.SaveChanges();
+
+            notificationProvider.Notify(string.Format("{0}<<<{1} added new recipe: {2}", recipe.Id, username, recipe.Name));
 
             return this.Ok(recipe.Id);
         }
@@ -75,25 +82,109 @@
                 return this.BadRequest("Invalid Id - invalid guid format");
             }
 
-            var recipie = this.Data.Recipies.Find(guidId);
+            var recipe = this.Data.Recipies.Find(guidId);
 
-            if (recipie == null)
+            if (recipe == null)
             {
                 return this.BadRequest("Invalid Id - recipie not found");
             }
 
-            return Ok(RecipieDetailsDataModel.FromDataToModel(recipie));
+            var liked = this.ViewRecipe(recipe.Id);
+
+            var model = RecipieDetailsDataModel.FromDataToModel(recipe);
+
+            model.Liked = liked;
+
+            return Ok(model);
         }
 
         [HttpGet]
-        public IHttpActionResult GetByName(string name)
+        public IHttpActionResult GetByName(string id)
         {
-            if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
             {
                 return this.BadRequest("Invalid name - empty");
             }
 
-            return this.Ok(this.Data.Recipies.All().Where(r => r.Name.ToLower().Contains(name.ToLower())).Select(RecipeOverviewDataModel.FromDataToModel));
+            return this.Ok(this.Data.Recipies.All().Where(r => r.Name.ToLower().Contains(id.ToLower())).Select(RecipeOverviewDataModel.FromDataToModel));
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetByCategory(string id)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
+            {
+                return this.BadRequest("Invalid category - empty");
+            }
+
+            return this.Ok(this.Data.Recipies.All().Where(r => r.Category.Name.ToLower()== id.ToLower()).Select(RecipeOverviewDataModel.FromDataToModel));
+        }
+
+        [HttpPost]
+        public IHttpActionResult Comment([FromBody]CommentDataModel commentDataModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(ModelState);
+            }
+
+            Guid guidId;
+
+            if (!Guid.TryParse(commentDataModel.RecipeId, out guidId))
+            {
+                return this.BadRequest("Invalid Id - invalid guid format");
+            }
+
+            var recipe = this.Data.Recipies.Find(guidId);
+
+            var user = this.Data.Users.Find(this.UserIdProvider.GetUserId());
+
+            this.Data.Comments.Add(CommentDataModel.FromModelToData(commentDataModel, user.Id));
+
+            this.Data.SaveChanges();
+
+            notificationProvider.Notify(string.Format("{0}<<<{1} commented recipe {2} : {3}", recipe.Id, user.UserName, recipe.Name, commentDataModel.Text));
+
+            return this.Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult Like(string id)
+        {
+            Guid guidId;
+
+            if (!Guid.TryParse(id, out guidId))
+            {
+                return this.BadRequest("Invalid Id - invalid guid format");
+            }
+
+            var recipe = this.Data.Recipies.Find(guidId);
+
+            if (recipe == null)
+            {
+                return this.BadRequest("Recipe not found");
+            }
+
+            var user = this.Data.Users.Find(this.UserIdProvider.GetUserId());
+
+            var view = user.RecipeViews.FirstOrDefault(rv => rv.RecipeId.ToString() == id);
+
+            if (view.Liked == null)
+            {
+                view.Liked = true;
+            }
+            else
+            {
+                view.Liked = !view.Liked;
+            }
+
+            this.Data.RecipeViews.Update(view);
+
+            this.Data.SaveChanges();
+
+            notificationProvider.Notify(string.Format("{0}<<<{1} {2} recipe {3}", recipe.Id, user.UserName, view.Liked == true ? "liked" : "disliked", recipe.Name));
+
+            return this.Ok();
         }
 
         [HttpGet]
@@ -263,6 +354,31 @@
             }
 
             this.Data.SaveChanges();
+        }
+
+        private bool? ViewRecipe(Guid recipeId)
+        {
+            var userId = this.UserIdProvider.GetUserId();
+            var userView = this.Data.Users.Find(userId).RecipeViews.FirstOrDefault((rv => rv.RecipeId == recipeId));
+
+            bool? liked = null;
+
+            if (userView == null)
+            {
+                this.Data.RecipeViews.Add(new RecipeView()
+                {
+                    UserId = userId,
+                    RecipeId = recipeId
+                });
+
+                this.Data.SaveChanges();
+            }
+            else
+            {
+                liked = userView.Liked;
+            }
+
+            return liked;
         }
     }
 }

@@ -15,6 +15,7 @@
             {
                 return r => new RecipieDetailsDataModel()
                 {
+                    Id = r.Id.ToString(),
                     Category = r.Category.Name,
                     Comments = r.Comments.Select(CommentDataModel.FromDataToModel),
                     Description = r.Description,
@@ -24,10 +25,12 @@
                     PreparationSteps = r.PreparationSteps.Select(PreparationStepDataModel.FromDataToModel),
                     RecipeViews = r.RecipeViews.Count(),
                     RecipeLikes = r.RecipeViews.Count(l => l.Liked == true),
-                    User = r.User.UserName
+                    Owner = r.User.UserName
                 };
             }
         }
+
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -37,7 +40,7 @@
 
         public string Image { get; set; }
 
-        public string User { get; set; }
+        public string Owner { get; set; }
 
         public string Category { get; set; }
 
@@ -48,5 +51,7 @@
         public int RecipeViews { get; set; }
 
         public int RecipeLikes { get; set; }
+
+        public bool? Liked { get; set; }
     }
 }

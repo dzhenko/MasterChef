@@ -21,7 +21,7 @@ namespace MasterChef.Web
         {
             ConfigureAuth(app);
             app.UseNinjectMiddleware(CreateKernel).UseNinjectWebApi(GlobalConfiguration.Configuration);
-            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+            // app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
         }
         private static StandardKernel CreateKernel()
         {
@@ -39,7 +39,9 @@ namespace MasterChef.Web
 
             kernel.Bind<IUserIdProvider>().To<AspNetUserIdProvider>();
 
-            kernel.Bind<IDropboxImageUploader>().ToConstant(DropboxImageUploader.Instance);
+            kernel.Bind<IImageUploadProvider>().ToConstant(DropboxImageUploadProvider.Instance);
+
+            kernel.Bind<INotificationProvider>().ToConstant(PubNubNotificationProvider.Instance);
         }
     }
 }

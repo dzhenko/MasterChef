@@ -9,7 +9,7 @@
     using Spring.Social.Dropbox.Connect;
     using Spring.Social.OAuth1;
 
-    public class DropboxImageUploader : IDropboxImageUploader
+    public class DropboxImageUploadProvider : IImageUploadProvider
     {
         // https://www.dropbox.com/home Email: zarichepower@gmail.com Password: ta_peach
         // https://www.dropbox.com/developers/apps/info/jkgqqefhutacq4n
@@ -19,13 +19,13 @@
         private const string OauthAccessTokenValue = "ra72amhofx2x56vp";
         private const string OauthAccessTokenSecret = "cf87kxku32j17mg";
 
-        private static IDropboxImageUploader dropboxDataProvider;
+        private static IImageUploadProvider dropboxDataProvider;
         private DropboxServiceProvider dropboxServiceProvider;
         private OAuthToken oauthAccessToken;
         private WebClient client;
         private IDropbox dropbox;
 
-        private DropboxImageUploader()
+        private DropboxImageUploadProvider()
         {
             this.dropboxServiceProvider = new DropboxServiceProvider(DropboxAppKey, DropboxAppSecret, AccessLevel.Full);
             this.oauthAccessToken = new OAuthToken(OauthAccessTokenValue, OauthAccessTokenSecret); // this.oauthAccessToken = this.LoadOAuthToken();
@@ -33,13 +33,13 @@
             this.dropbox = this.dropboxServiceProvider.GetApi(this.oauthAccessToken.Value, this.oauthAccessToken.Secret);
         }
 
-        public static IDropboxImageUploader Instance
+        public static IImageUploadProvider Instance
         {
             get
             {
                 if (dropboxDataProvider == null)
                 {
-                    dropboxDataProvider = new DropboxImageUploader();
+                    dropboxDataProvider = new DropboxImageUploadProvider();
                 }
 
                 return dropboxDataProvider;
@@ -49,12 +49,12 @@
         /// <summary>
         /// Uploads the image to dropbox and then gets the new url.
         /// </summary>
-        /// <param name="url">Used to download the image.</param>
+        /// <param name="sourceUrl">Used to download the image.</param>
         /// <param name="fileName">Used as name for the image.</param>
         /// <returns>The link from dropbox</returns>
-        public string UploadImageToDropbox(string url, string fileName)
+        public string UploadImage(string sourceUrl, string fileName)
         {
-            this.client.DownloadFile(url, fileName);
+            this.client.DownloadFile(sourceUrl, fileName);
             Entry uploadFileEntry = dropbox.UploadFileAsync(new FileResource(fileName), string.Format("/images/{0}.jpg", fileName)).Result; // TODO: check for file extensions?
             DropboxLink sharedUrl = dropbox.GetMediaLinkAsync(uploadFileEntry.Path).Result;
             File.Delete(fileName);
