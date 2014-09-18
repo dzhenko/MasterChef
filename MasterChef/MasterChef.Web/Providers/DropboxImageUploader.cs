@@ -54,10 +54,9 @@
         /// <returns>The link from dropbox</returns>
         public string UploadImage(string sourceUrl, string fileName)
         {
-            this.client.DownloadFile(sourceUrl, fileName);
-            Entry uploadFileEntry = dropbox.UploadFileAsync(new FileResource(fileName), string.Format("/images/{0}.jpg", fileName)).Result; // TODO: check for file extensions?
-            DropboxLink sharedUrl = dropbox.GetMediaLinkAsync(uploadFileEntry.Path).Result;
-            File.Delete(fileName);
+            var entry = dropbox.UploadFileAsync(new DropBoxImageResourceCreator(sourceUrl), string.Format("/images/{0}.jpg", fileName)).Result;
+
+            DropboxLink sharedUrl = dropbox.GetMediaLinkAsync(entry.Path).Result;
 
             return sharedUrl.Url.ToString();
         }

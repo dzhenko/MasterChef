@@ -266,6 +266,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Providers\DropBoxImageResourceCreator.cs" />
     <Compile Include="Providers\DropboxImageUploader.cs" />
     <Compile Include="Providers\IImageUploadProvider.cs" />
     <Compile Include="Providers\INotificationProvider.cs" />

@@ -55,9 +55,7 @@
                     (newRecipeDataModel.PreparationSteps.Select(r => PreparationStepDataModel.FromModelToData(r, recipe.Id)));
             }
 
-            //recipe.Image = this.imageUploadProvider.UploadImage(newRecipeDataModel.Image, recipe.Id.ToString());
-
-            recipe.Image = "damnit";
+            recipe.Image = this.imageUploadProvider.UploadImage(newRecipeDataModel.Image, recipe.Id.ToString());
 
             this.Data.SaveChanges();
 
