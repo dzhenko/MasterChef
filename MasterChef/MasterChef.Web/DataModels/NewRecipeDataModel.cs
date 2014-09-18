@@ -10,23 +10,27 @@
 
     public class NewRecipeDataModel
     {
-        public static Recipe FromModelToData(NewRecipeDataModel data, Category category)
+        public static Recipe FromModelToData(NewRecipeDataModel data, int categoryId)
         {
             return new Recipe()
             {
                 Name = data.Name,
-                Image = data.Image,
                 Description = data.Description,
-                CategoryId = category.Id
+                CategoryId = categoryId,
+                Products = string.Join(";", data.Products)
             };
         }
 
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string Image { get; set; }
+
+        public IEnumerable<string> Products { get; set; }
 
         [Required]
         public string Category { get; set; }

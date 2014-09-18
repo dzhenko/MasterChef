@@ -20,6 +20,7 @@
                     Description = r.Description,
                     Image = r.Image,
                     Name = r.Name,
+                    Products = r.Products.Split(';'),
                     PreparationSteps = r.PreparationSteps.Select(PreparationStepDataModel.FromDataToModel),
                     RecipeViews = r.RecipeViews.Count(),
                     RecipeLikes = r.RecipeViews.Count(l => l.Liked == true),
@@ -31,6 +32,8 @@
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public IEnumerable<string> Products { get; set; }
 
         public string Image { get; set; }
 

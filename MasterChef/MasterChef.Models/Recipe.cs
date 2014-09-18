@@ -27,7 +27,8 @@
         [Required]
         public string Description { get; set; }
 
-        [Required]
+        public string Products { get; set; }
+
         public string Image { get; set; }
 
         [Required]

@@ -9,6 +9,7 @@ using Ninject;
 using Ninject.Web.Common.OwinHost;
 using Ninject.Web.WebApi.OwinHost;
 using Owin;
+using MasterChef.Web.Providers;
 
 [assembly: OwinStartup(typeof(MasterChef.Web.Startup))]
 
@@ -20,6 +21,7 @@ namespace MasterChef.Web
         {
             ConfigureAuth(app);
             app.UseNinjectMiddleware(CreateKernel).UseNinjectWebApi(GlobalConfiguration.Configuration);
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
         }
         private static StandardKernel CreateKernel()
         {
@@ -36,6 +38,8 @@ namespace MasterChef.Web
                     c => new MasterChefDbContext());
 
             kernel.Bind<IUserIdProvider>().To<AspNetUserIdProvider>();
+
+            kernel.Bind<IDropboxImageUploader>().ToConstant(DropboxImageUploader.Instance);
         }
     }
 }

@@ -10,14 +10,18 @@
     using MasterChef.Models;
     using MasterChef.Web.DataModels;
     using MasterChef.Web.Infrastructure;
+    using MasterChef.Web.Providers;
 
     [Authorize]
     [EnableCors("*", "*", "*")]
-    public class RecipiesController : BaseApiController
+    public class RecipesController : BaseApiController
     {
-        public RecipiesController(IMasterChefData data, IUserIdProvider userIdProvider)
+        private readonly IDropboxImageUploader imageUploadProvider;
+
+        public RecipesController(IMasterChefData data, IUserIdProvider userIdProvider, IDropboxImageUploader imageUploadProvider)
             : base(data, userIdProvider)
         {
+            this.imageUploadProvider = imageUploadProvider;
         }
 
         [HttpPost]
@@ -36,17 +40,20 @@
                 return this.BadRequest("You can not use unexisting categories");
             }
 
-            var recipe = NewRecipeDataModel.FromModelToData(newRecipeDataModel, category);
-
-            if (newRecipeDataModel.PreparationSteps != null && newRecipeDataModel.PreparationSteps.Count > 0)
-            {
-                recipe.PreparationSteps = new HashSet<PreparationStep>
-                    (newRecipeDataModel.PreparationSteps.Select(PreparationStepDataModel.FromModelToData));
-            }
+            var recipe = NewRecipeDataModel.FromModelToData(newRecipeDataModel, category.Id);
 
             recipe.UserId = this.UserIdProvider.GetUserId();
 
             this.Data.Recipies.Add(recipe);
+            
+            if (newRecipeDataModel.PreparationSteps != null && newRecipeDataModel.PreparationSteps.Count > 0)
+            {
+                recipe.PreparationSteps = new HashSet<PreparationStep>
+                    (newRecipeDataModel.PreparationSteps.Select(r => PreparationStepDataModel.FromModelToData(r, recipe.Id)));
+            }
+
+            recipe.Image = this.imageUploadProvider.UploadImageToDropbox(newRecipeDataModel.Image, recipe.Id.ToString());
+            
             this.Data.SaveChanges();
 
             return this.Ok(recipe.Id);

@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using System.ComponentModel.DataAnnotations;
+
     using MasterChef.Models;
 
     public class CommentDataModel
@@ -20,19 +22,19 @@
             }
         }
 
-        public static Func<CommentDataModel, Comment> FromModelToData
+        public static Comment FromModelToData(CommentDataModel model, string userId, Guid recipeId)
         {
-            get
+            return new Comment()
             {
-                return c => new Comment()
-                {
-                    Text = c.Text
-                };
-            }
+                RecipeId = recipeId,
+                UserId = userId,
+                Text = model.Text
+            };
         }
 
         public string User { get; set; }
 
+        [Required]
         public string Text { get; set; }
     }
 }

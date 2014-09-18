@@ -9,7 +9,11 @@ namespace MasterChef.Web.Controllers
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
-
+    using System.Web.Http.Cors;
+    using MasterChef.Models;
+    using MasterChef.Web.Models;
+    using MasterChef.Web.Providers;
+    using MasterChef.Web.Results;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
@@ -17,13 +21,9 @@ namespace MasterChef.Web.Controllers
     using Microsoft.Owin.Security.Cookies;
     using Microsoft.Owin.Security.OAuth;
 
-    using MasterChef.Models;
-    using MasterChef.Web.Models;
-    using MasterChef.Web.Providers;
-    using MasterChef.Web.Results;
-
     [Authorize]
     [RoutePrefix("api/Account")]
+    [EnableCors("*", "*", "*")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";

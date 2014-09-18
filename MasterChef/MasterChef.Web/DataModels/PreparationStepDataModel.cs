@@ -7,19 +7,6 @@
 
     public class PreparationStepDataModel
     {
-        public static Func<PreparationStepDataModel, PreparationStep> FromModelToData
-        {
-            get
-            {
-                return (p => new PreparationStep()
-                {
-                    Minutes = p.Minutes,
-                    Text = p.Text,
-                    StepNumber = p.StepNumber
-                });
-            }
-        }
-
         public static Func<PreparationStep, PreparationStepDataModel> FromDataToModel
         {
             get
@@ -33,6 +20,17 @@
             }
         }
 
+        public static PreparationStep FromModelToData(PreparationStepDataModel model, Guid recipeId)
+        {
+            return new PreparationStep()
+            {
+                Minutes = model.Minutes,
+                Text = model.Text,
+                StepNumber = model.StepNumber,
+                RecipeId = recipeId
+            };
+        }
+
         [Required]
         public int Minutes { get; set; }
 
@@ -40,7 +38,6 @@
         public int StepNumber { get; set; }
 
         [Required]
-        [MinLength(6)]
         public string Text { get; set; }
     }
 }
