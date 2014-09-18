@@ -277,7 +277,6 @@
     <Compile Include="PubnubCore\PubnubCore.cs" />
     <Compile Include="PubnubCore\PubnubWin.cs" />
     <Compile Include="PubnubCore\ReconnectState.cs" />
-    <Compile Include="PubnubExample.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

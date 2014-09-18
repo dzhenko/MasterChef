@@ -9,12 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterChef.Data", "MasterCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterChef.Web", "MasterChef.Web\MasterChef.Web.csproj", "{B7E19F79-1421-4353-BF4B-FD0ABE2B5B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterChef.HTML", "MasterChef.HTML\MasterChef.HTML.csproj", "{605B146E-CC6E-4A3A-954B-CDFAC353A954}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterChef.Service", "MasterChef.Service\MasterChef.Service.csproj", "{3FD6D01A-4AD6-4CE9-B1DA-6916D158674B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterChef.ServiceHost", "MasterChef.ServiceHost\MasterChef.ServiceHost.csproj", "{2787BE5A-E738-4CE7-95F6-5C11B41ABFF1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,18 +27,6 @@ Global
 		{B7E19F79-1421-4353-BF4B-FD0ABE2B5B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E19F79-1421-4353-BF4B-FD0ABE2B5B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7E19F79-1421-4353-BF4B-FD0ABE2B5B3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{605B146E-CC6E-4A3A-954B-CDFAC353A954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{605B146E-CC6E-4A3A-954B-CDFAC353A954}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{605B146E-CC6E-4A3A-954B-CDFAC353A954}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{605B146E-CC6E-4A3A-954B-CDFAC353A954}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3FD6D01A-4AD6-4CE9-B1DA-6916D158674B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FD6D01A-4AD6-4CE9-B1DA-6916D158674B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FD6D01A-4AD6-4CE9-B1DA-6916D158674B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FD6D01A-4AD6-4CE9-B1DA-6916D158674B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2787BE5A-E738-4CE7-95F6-5C11B41ABFF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2787BE5A-E738-4CE7-95F6-5C11B41ABFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2787BE5A-E738-4CE7-95F6-5C11B41ABFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2787BE5A-E738-4CE7-95F6-5C11B41ABFF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

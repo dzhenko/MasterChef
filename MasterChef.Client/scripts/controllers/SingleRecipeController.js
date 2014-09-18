@@ -11,7 +11,7 @@ recipesApp.controller('SingleRecipeController', function SingleRecipeController(
             $scope.recipe.RecipeLikes++;
         }
 
-        requester.actions.like($scope.recipe.Id).then(function(){console.log('liked')});
+        requester.actions.like($scope.recipe.Id);
     };
 
     function refresh(){
