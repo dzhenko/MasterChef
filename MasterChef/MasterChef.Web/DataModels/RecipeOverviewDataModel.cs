@@ -9,7 +9,7 @@
 
     public class RecipeOverviewDataModel
     {
-        public static Func<Recipe, RecipeOverviewDataModel> FromDataToModel
+        public static Expression<Func<Recipe, RecipeOverviewDataModel>> FromDataToModel
         {
             get
             {

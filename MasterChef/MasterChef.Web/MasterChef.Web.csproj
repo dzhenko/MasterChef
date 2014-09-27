@@ -254,6 +254,7 @@
     <Compile Include="DataModels\CommentDataModel.cs" />
     <Compile Include="DataModels\NewRecipeDataModel.cs" />
     <Compile Include="DataModels\PreparationStepDataModel.cs" />
+    <Compile Include="DataModels\RecipeExtendedOverviewDataModel.cs" />
     <Compile Include="DataModels\RecipeOverviewDataModel.cs" />
     <Compile Include="DataModels\RecipieDetailsDataModel.cs" />
     <Compile Include="DataModels\UpdatedRecipeDataModel.cs" />

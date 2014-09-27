@@ -19,7 +19,7 @@
         private readonly IImageUploadProvider imageUploadProvider;
         private readonly INotificationProvider notificationProvider;
 
-        public RecipesController(IMasterChefData data, IUserIdProvider userIdProvider, 
+        public RecipesController(IMasterChefData data, IUserIdProvider userIdProvider,
             IImageUploadProvider imageUploadProvider, INotificationProvider notificationProvider)
             : base(data, userIdProvider)
         {
@@ -48,7 +48,7 @@
             var username = this.Data.Users.Find(recipe.UserId).UserName;
 
             this.Data.Recipies.Add(recipe);
-            
+
             if (newRecipeDataModel.PreparationSteps != null && newRecipeDataModel.PreparationSteps.Count > 0)
             {
                 recipe.PreparationSteps = new HashSet<PreparationStep>
@@ -66,7 +66,7 @@
 
         public IHttpActionResult Get()
         {
-            return this.Ok(this.Data.Recipies.All().Select(RecipeOverviewDataModel.FromDataToModel));
+            return this.Ok(this.Data.Recipies.All().Select(RecipeExtendedOverviewDataModel.FromDataToModelExtended(this.UserIdProvider.GetUserId())));
         }
 
         public IHttpActionResult Get(string id)
@@ -80,9 +80,7 @@
 
             var model = RecipieDetailsDataModel.FromDataToModel(recipe);
 
-            var liked = this.ViewRecipe(model.Id);
-
-            model.Liked = liked;
+            model.Liked = this.ViewRecipe(model.Id);
 
             return Ok(model);
         }
@@ -101,15 +99,17 @@
 
             var recipes = this.Data.Recipies.All();
 
-            switch (param)
-	        {
-                case "name":recipes = recipes.Where(r => r.Name.ToLower().Contains(value.ToLower())); break;
-                case "category":recipes = recipes.Where(r => r.Category.Name.ToLower() == value.ToLower()); break;
-                case "user": recipes = recipes.Where(r => r.User.Id == value); break;
-		        default: return this.BadRequest("Invalid param");
-	        }
 
-            return this.Ok(recipes.Select(RecipeOverviewDataModel.FromDataToModel));
+            switch (param)
+            {
+                case "name": recipes = recipes.Where(r => r.Name.ToLower().Contains(value.ToLower())); break;
+                case "category": recipes = recipes.Where(r => r.Category.Name.ToLower() == value.ToLower()); break;
+                case "user": recipes = recipes.Where(r => r.User.Id == value); break;
+                case "next": return this.Get(this.Data.Recipies.All().OrderBy(r => r.Id.ToString()).Skip(DateTime.Now.Millisecond % this.Data.Recipies.All().Count()).Take(1).FirstOrDefault().Id.ToString());
+                default: return this.BadRequest("Invalid param");
+            }
+
+            return this.Ok(recipes.Select(RecipeExtendedOverviewDataModel.FromDataToModelExtended(this.UserIdProvider.GetUserId())));
         }
 
         public IHttpActionResult Delete(string id)
@@ -184,7 +184,7 @@
 
             this.Data.SaveChanges();
 
-            notificationProvider.Notify(string.Format("{0}<<<{1} {2} recipe {3}", 
+            notificationProvider.Notify(string.Format("{0}<<<{1} {2} recipe {3}",
                 recipe.Id, user.UserName, view.Liked == true ? "liked" : "disliked", recipe.Name));
 
             return this.Ok();
