@@ -55,7 +55,10 @@
                     (newRecipeDataModel.PreparationSteps.Select(r => PreparationStepDataModel.FromModelToData(r, recipe.Id)));
             }
 
-            recipe.Image = this.imageUploadProvider.UploadImage(newRecipeDataModel.Image, recipe.Id.ToString());
+            //disabled untill dropbox account is purchased :)
+            //recipe.Image = this.imageUploadProvider.UploadImage(newRecipeDataModel.Image, recipe.Id.ToString());
+
+            recipe.Image = newRecipeDataModel.Image;
 
             this.Data.SaveChanges();
 
