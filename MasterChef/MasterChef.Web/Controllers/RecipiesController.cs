@@ -204,6 +204,10 @@
             var guidId = Guid.Parse(recipeId);
 
             var userId = this.UserIdProvider.GetUserId();
+            if (userId == null)
+            {
+                return false;
+            }
             var userView = this.Data.Users.Find(userId).RecipeViews.FirstOrDefault((rv => rv.RecipeId == guidId));
 
             bool? liked = null;
