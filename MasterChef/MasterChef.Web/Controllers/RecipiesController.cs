@@ -67,6 +67,7 @@
             return this.Ok(recipe.Id);
         }
 
+        [AllowAnonymous]
         public IHttpActionResult Get()
         {
             return this.Ok(this.Data.Recipies.All().Select(RecipeExtendedOverviewDataModel.FromDataToModelExtended(this.UserIdProvider.GetUserId())));
