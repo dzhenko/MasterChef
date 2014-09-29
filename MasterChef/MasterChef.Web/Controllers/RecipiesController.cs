@@ -12,7 +12,6 @@
     using MasterChef.Web.Infrastructure;
     using MasterChef.Web.Providers;
 
-    [Authorize]
     [EnableCors("*", "*", "*")]
     public class RecipesController : BaseApiController
     {
@@ -27,6 +26,7 @@
             this.notificationProvider = notificationProvider;
         }
 
+        [Authorize]
         public IHttpActionResult Post([FromBody] NewRecipeDataModel newRecipeDataModel)
         {
             if (newRecipeDataModel == null || !ModelState.IsValid)
@@ -118,6 +118,7 @@
             return this.Ok(recipes.Select(RecipeExtendedOverviewDataModel.FromDataToModelExtended(this.UserIdProvider.GetUserId())));
         }
 
+        [Authorize]
         public IHttpActionResult Delete(string id)
         {
             var recipe = GetRecipeById(id);
@@ -138,6 +139,7 @@
             return this.Ok(recipe.Id);
         }
 
+        [Authorize]
         public IHttpActionResult Put(string id, string comment)
         {
             if (string.IsNullOrEmpty(comment))
@@ -164,6 +166,7 @@
             return this.Ok();
         }
 
+        [Authorize]
         public IHttpActionResult Put(string id)
         {
             var recipe = this.GetRecipeById(id);
