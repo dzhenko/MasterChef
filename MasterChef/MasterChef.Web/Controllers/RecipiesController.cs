@@ -89,6 +89,7 @@
             return Ok(model);
         }
 
+        [AllowAnonymous]
         public IHttpActionResult Get(string param, string value)
         {
             if (string.IsNullOrEmpty(param) || string.IsNullOrWhiteSpace(param))
