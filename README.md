@@ -11,6 +11,7 @@ This simple application provides functionality for the user to upload her/his fa
 **RESTful application powered by:**
 - [ASP.NET WebAPI](http://www.asp.net/web-api) - Repository Pattern + Unit of work + dependency resolver (Ninject)
 - [Microsoft SQL Server](http://www.microsoft.com/en-us/server-cloud/products/sql-server/)
+- [AngularJS](https://angularjs.org/)
 - [Twitter Bootstrap](http://getbootstrap.com/)
 - [jQuery](http://jquery.com/)
 
