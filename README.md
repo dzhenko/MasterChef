@@ -19,7 +19,7 @@ This simple application provides functionality for the user to upload her/his fa
 - [Pubnub](http://www.pubnub.com/) - Simple and Real-time Communications API
 - [Dropbox] (http://www.springframework.net/) - Dropbox file manager API
 
-## List of Contributors(https://github.com/fast4y/MasterChef/graphs/contributors)
+## [List of Contributors](https://github.com/fast4y/MasterChef/graphs/contributors)
 
 ## MasterChef - User Interface
 <p align="center"><img src="https://raw.githubusercontent.com/fast4y/MasterChef/master/images/1.jpg" /></p>
