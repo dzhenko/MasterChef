@@ -1,4 +1,4 @@
-<p align="center"><a href="http://academy.telerik.com/"><img src="https://raw.github.com/flextry/Telerik-Academy/master/Programming%20with%20C%23/Codes/Other/Telerik.png" /></a></p>
+<p align="center"><a href="http://academy.telerik.com/"><img src="https://raw.githubusercontent.com/fast4y/TelerikAcademy/master/ta.png" /></a></p>
 
 ## MasterChef - Single Page Application
 
